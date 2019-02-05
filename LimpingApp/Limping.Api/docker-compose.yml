@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  limping.api:
+    image: ${DOCKER_REGISTRY}limpingapi
+    build:
+      context: .
+      dockerfile: Limping.Api\Dockerfile
