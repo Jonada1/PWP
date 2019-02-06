@@ -1,8 +1,8 @@
 # PWP SPRING 2019
-# PROJECT NAME
+# Limping Data of Patients
 # Group information
-* Student 1. Name and email
-* Student 2. Name and email
-* Student 3. Name and email
+* Jonada Ferracaku jonada.ferracaku@student.oulu.fi
+* Parsa Sharmila parsa.sharmila@student.oulu.fi
+* Ciprian Florea ciprian.florea@student.oulu.fi
 
 
