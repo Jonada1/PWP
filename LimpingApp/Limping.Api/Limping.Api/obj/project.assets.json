@@ -11795,11 +11795,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jonada\\source\\repos\\Limping.Api\\Limping.Api\\Limping.Api.csproj",
+      "projectUniqueName": "C:\\Users\\Jonada\\Documents\\Study Materials\\First Year\\Second Semester\\PWP\\PWP\\LimpingApp\\Limping.Api\\Limping.Api\\Limping.Api.csproj",
       "projectName": "Limping.Api",
-      "projectPath": "C:\\Users\\Jonada\\source\\repos\\Limping.Api\\Limping.Api\\Limping.Api.csproj",
+      "projectPath": "C:\\Users\\Jonada\\Documents\\Study Materials\\First Year\\Second Semester\\PWP\\PWP\\LimpingApp\\Limping.Api\\Limping.Api\\Limping.Api.csproj",
       "packagesPath": "C:\\Users\\Jonada\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jonada\\source\\repos\\Limping.Api\\Limping.Api\\obj\\",
+      "outputPath": "C:\\Users\\Jonada\\Documents\\Study Materials\\First Year\\Second Semester\\PWP\\PWP\\LimpingApp\\Limping.Api\\Limping.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
