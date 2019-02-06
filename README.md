@@ -3,6 +3,6 @@
 # Group information
 * Jonada Ferracaku jonada.ferracaku@student.oulu.fi
 * Parsa Sharmila parsa.sharmila@student.oulu.fi
-* Ciprian Florea ciprian.florea@student.oulu.fi
+* Ciprian Florea ciprian.florea@oulu.fi
 
 
