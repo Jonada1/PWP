@@ -14,23 +14,10 @@ namespace Limping.Api.Models
 
         public DbSet<LimpingTest> LimpingTests { get; set; }
         public DbSet<TestAnalysis> TestAnalyses { get; set; }
-        public DbSet<TestComparison> TestComparisons { get; set; }
-        public DbSet<LimpingTestTestComparison> LimpingTestTestComparisons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Many-to-many between Limping Test & Test Comparison
-            modelBuilder.Entity<LimpingTestTestComparison>()
-                .HasKey(lttc => new { lttc.LimpingTestId, lttc.TestComparisonId });
-            modelBuilder.Entity<LimpingTestTestComparison>()
-                .HasOne(lttc => lttc.LimpingTest)
-                .WithMany(lt => lt.LimpingTestTestComparisons)
-                .HasForeignKey(lttc => lttc.LimpingTestId);
-            modelBuilder.Entity<LimpingTestTestComparison>()
-                .HasOne(lttc => lttc.TestComparison)
-                .WithMany(tc => tc.LimpingTestTestComparisons)
-                .HasForeignKey(lttc => lttc.TestComparisonId);
 
             modelBuilder.Entity<LimpingTest>()
                 .HasOne(lt => lt.TestAnalysis)

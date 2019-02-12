@@ -17,6 +17,5 @@ namespace Limping.Api.Models
         public Guid TestAnalysisId { get; set; }
         public virtual AppUser AppUser { get; set; }
         public virtual TestAnalysis TestAnalysis { get; set; }
-        public virtual List<LimpingTestTestComparison> LimpingTestTestComparisons { get; set; }
     }
 }

@@ -13,3 +13,18 @@ C:\Users\Jonada\Documents\Study Materials\First Year\Second Semester\PWP\PWP\Lim
 C:\Users\Jonada\Documents\Study Materials\First Year\Second Semester\PWP\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorTargetAssemblyInfo.cache
 C:\Users\Jonada\Documents\Study Materials\First Year\Second Semester\PWP\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.dll
 C:\Users\Jonada\Documents\Study Materials\First Year\Second Semester\PWP\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.pdb
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\bin\Debug\netcoreapp2.1\Limping.Api.deps.json
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\bin\Debug\netcoreapp2.1\Limping.Api.runtimeconfig.json
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\bin\Debug\netcoreapp2.1\Limping.Api.runtimeconfig.dev.json
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\bin\Debug\netcoreapp2.1\Limping.Api.dll
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\bin\Debug\netcoreapp2.1\Limping.Api.pdb
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.csprojAssemblyReference.cache
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.csproj.CoreCompileInputs.cache
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorAssemblyInfo.cache
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorAssemblyInfo.cs
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.AssemblyInfoInputs.cache
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.AssemblyInfo.cs
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorTargetAssemblyInfo.cache
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.dll
+C:\Users\Nejdi\Documents\Jonadas Stuff\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.pdb
