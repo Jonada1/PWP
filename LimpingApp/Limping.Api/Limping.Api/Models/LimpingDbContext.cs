@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Limping.Api.Models
 {
-    public class LimpingDbContext: IdentityDbContext<AppUser>
+    public class LimpingDbContext: DbContext
     {
         public LimpingDbContext(DbContextOptions<LimpingDbContext> options)
            : base(options) { }
-
+        public DbSet<DataMigration> DataMigrations { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<LimpingTest> LimpingTests { get; set; }
         public DbSet<TestAnalysis> TestAnalyses { get; set; }
 

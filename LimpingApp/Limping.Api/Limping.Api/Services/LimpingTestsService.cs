@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Limping.Api.Services.Interfaces;
 
 namespace Limping.Api.Services
 {
-    public class LimpingTestsService
+    public class LimpingTestsService: ILimpingTestsService
     {
         private readonly LimpingDbContext _context;
         public LimpingTestsService(LimpingDbContext context)
