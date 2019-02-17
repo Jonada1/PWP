@@ -18,10 +18,6 @@ namespace Limping.Api.Services
         public async Task ReplaceTest(Guid testId, TestAnalysis newTest)
         {
             var oldTest = await _context.TestAnalyses.FindAsync(testId);
-            if (oldTest.LimpingTestId != newTest.LimpingTestId)
-            {
-                throw new Exception("The old test doesn't have the same LimpingTestId as the new test. Therefore cannot replace one another");
-            }
             _context.TestAnalyses.Remove(oldTest);
             _context.TestAnalyses.Add(newTest);
             await _context.SaveChangesAsync();
@@ -29,7 +25,9 @@ namespace Limping.Api.Services
 
         public async Task EditTest(TestAnalysis editedTest)
         {
-            _context.Entry(editedTest).State = EntityState.Modified;
+            var found = await _context.TestAnalyses.FindAsync(editedTest.Id);
+            _context.Entry(found).CurrentValues.SetValues(editedTest);
+            _context.Entry(found).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
         }

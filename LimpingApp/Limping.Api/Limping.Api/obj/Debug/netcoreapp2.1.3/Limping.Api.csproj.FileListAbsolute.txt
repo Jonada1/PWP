@@ -12,3 +12,4 @@ C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1.3\Limping.Api.RazorTargetAssemblyInfo.cache
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1.3\Limping.Api.dll
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1.3\Limping.Api.pdb
+C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1.3\Limping.Api.csprojAssemblyReference.cache

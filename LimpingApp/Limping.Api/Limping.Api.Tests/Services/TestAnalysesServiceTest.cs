@@ -45,8 +45,11 @@ namespace Limping.Api.Tests.Services
                 TestAnalysis = analysis,
                 TestData = "{numbers: [1, 2, 3]}"
             }).Entity;
+            await context.LimpingTests.AddAsync(limpingTest);
             await context.SaveChangesAsync();
             context.Entry(limpingTest).State = EntityState.Detached;
+            context.Entry(appUser).State = EntityState.Detached;
+            context.Entry(analysis).State = EntityState.Detached;
             return limpingTest;
         }
 
@@ -65,9 +68,12 @@ namespace Limping.Api.Tests.Services
                     Description = "ok",
                     EndValue = 1.9,
                     LimpingSeverity = LimpingSeverityEnum.High,
+                    LimpingTestId = limpingTest.Id,
                 };
                 await service.EditTest(editAnalysis);
-                var found = await context.TestAnalyses.FindAsync(editAnalysis.Id);
+                context.Entry(editAnalysis).State = EntityState.Detached;
+
+                var found = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);
                 Assert.Equal(editAnalysis.Description, found.Description);
                 Assert.Equal(editAnalysis.EndValue, found.EndValue);
                 Assert.Equal(editAnalysis.LimpingSeverity, found.LimpingSeverity);
@@ -76,14 +82,15 @@ namespace Limping.Api.Tests.Services
                 var newAnalysis = new TestAnalysis
                 {
                     Id = Guid.NewGuid(),
-                    Description = "kk",
+                    Description = "ko",
                     EndValue = 1.5,
-                    LimpingSeverity = LimpingSeverityEnum.High
+                    LimpingSeverity = LimpingSeverityEnum.High,
+                    LimpingTestId = limpingTest.Id,
                 };
                 await service.ReplaceTest(editAnalysis.Id, newAnalysis);
-
-                var replacedAnalysis = await context.TestAnalyses.FindAsync(newAnalysis.Id);
-                var nullAnalysis = await context.TestAnalyses.FindAsync(editAnalysis.Id);
+                context.Entry(newAnalysis).State = EntityState.Detached;
+                var replacedAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == newAnalysis.Id);
+                var nullAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);
                 Assert.NotNull(replacedAnalysis);
                 Assert.Null(nullAnalysis);
             }
