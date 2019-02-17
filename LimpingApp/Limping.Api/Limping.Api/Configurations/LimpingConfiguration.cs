@@ -18,6 +18,5 @@ namespace Limping.Api.Configurations
     public class LimpingDatabase
     {
         public string ConnectionString { get; set; }
-        public int StartupConnectionTestRetryCount { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Limping.Api.Models;
 using Limping.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Limping.Api.Models
+namespace Limping.Api.Services
 {
     public class TestAnalysesService: ITestAnalysesService
     {

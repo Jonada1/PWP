@@ -3,41 +3,40 @@ using Limping.Api.Configurations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Limping.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
 
-            CreateWebHostBuilder(args).Build().Run();
+            var webHost = CreateWebHostBuilder(args)
+                .Build();
+            var result = webHost.BuildDatabase().Result;
+            result.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .ConfigureServices((context, services) => services.Configure<LimpingConfiguration>(config => context.Configuration.GetSection("Limping")))
+                .ConfigureServices((context, services) => services.Configure<LimpingConfiguration>(context.Configuration.GetSection("Limping")))
                 .UseStartup<Startup>()
                 .UseWebRoot("wwwroot");
         }
 
-        //public static async Task<IWebHost> BuildDatabase(this IWebHost webHost)
-        //{
-        //    var services = webHost.Services;
+        public static async Task<IWebHost> BuildDatabase(this IWebHost webHost)
+        {
+            var services = webHost.Services;
 
-        //    using (var scope = services.CreateScope())
-        //    {
-        //        await scope.ServiceProvider
-        //                .GetRequiredService<DatabaseStartup>()
-        //                .EnsureConnection()
-        //                .Migrate()
-        //                .ApplyDataMigrations()
-        //            ;
-        //    }
+            using (var scope = services.CreateScope())
+            {
+                var service = scope.ServiceProvider
+                        .GetRequiredService<DatabaseStartup>();
+                await service.Migrate().ApplyDataMigrations();
+            }
 
-        //    return webHost;
-        //}
+            return webHost;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Limping.Api.Models;
 using Limping.Api.Services;
@@ -12,7 +13,6 @@ namespace Limping.Api.Tests.Fixtures
         private readonly bool _manageDatabase;
 
         public LimpingDbContext Context { get; }
-
         public DatabaseFixture(LimpingDbContext context, DataMigrationService dataMigrationService)
         {
             _dataMigrationService = dataMigrationService;

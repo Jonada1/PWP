@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Limping.Api.DataMigrations;
 using Limping.Api.Models;
+using Limping.Api.Services.Lifetimes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Limping.Api.Services
 {
-    public class DataMigrationService
+    public class DataMigrationService: ITransientService
     {
         private readonly LimpingDbContext _context;
 

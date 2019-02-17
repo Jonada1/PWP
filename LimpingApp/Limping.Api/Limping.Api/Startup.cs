@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Limping.Api.Configurations;
 using Limping.Api.Extensions;
 using Limping.Api.Models;
 using Limping.Api.Services;
@@ -13,15 +14,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Scrutor;
 
 namespace Limping.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IOptions<LimpingConfiguration> _limpingConfigurations;
+        public Startup(IConfiguration configuration, IOptions<LimpingConfiguration> limpingConfigurations)
         {
             Configuration = configuration;
+            _limpingConfigurations = limpingConfigurations;
         }
 
         public IConfiguration Configuration { get; }
@@ -31,9 +35,13 @@ namespace Limping.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=LimpingDatabase;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<LimpingDbContext>
-                (options => options.UseSqlServer(connection));
+            (options => options.UseSqlServer
+                (
+            _limpingConfigurations.Value.Services?.Database.ConnectionString
+                          ?? "Server=(localdb)\\mssqllocaldb;Database=LimpingDatabaseTest;Trusted_Connection=True;"
+                )
+            );
 
             services.AddTransient<ILimpingTestsService, LimpingTestsService>();
             services.AddTransient<IAppUsersService, AppUsersService>();

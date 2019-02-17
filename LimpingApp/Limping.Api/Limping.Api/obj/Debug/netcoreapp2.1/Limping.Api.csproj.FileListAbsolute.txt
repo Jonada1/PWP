@@ -36,9 +36,9 @@ C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.csproj.CoreCompileInputs.cache
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorAssemblyInfo.cache
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorAssemblyInfo.cs
-C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.AssemblyInfoInputs.cache
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.AssemblyInfo.cs
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.RazorTargetAssemblyInfo.cache
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.dll
 C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.pdb
+C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\obj\Debug\netcoreapp2.1\Limping.Api.csprojAssemblyReference.cache

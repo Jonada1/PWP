@@ -14,11 +14,19 @@ namespace Limping.Api.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<AppUser>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
+            modelBuilder.Entity<AppUser>()
+                .HasIndex(x => x.UserName)
+                .IsUnique();
             modelBuilder.Entity<LimpingTest>()
                 .HasOne(lt => lt.TestAnalysis)
                 .WithOne(ta => ta.LimpingTest)
                 .HasForeignKey<TestAnalysis>(ta => ta.LimpingTestId);
+            modelBuilder.Entity<LimpingTest>()
+                .HasOne(lt => lt.AppUser)
+                .WithMany(usr => usr.LimpingTests);
         }
     }
 }

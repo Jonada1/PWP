@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Limping.Api.Configurations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -25,13 +26,22 @@ namespace Limping.Api.Tests.Fixtures
             }
 
             Directory.CreateDirectory(_webRoot);
-            var webHostBuilder = WebHost.CreateDefaultBuilder()
-                .UseEnvironment("IntegrationTesting")
-                .ConfigureServices((context, services) => services.Configure<LimpingConfiguration>(opt => context.Configuration.GetSection("Limping")))
+            var webHostBuilder = WebHost
+                .CreateDefaultBuilder();
+            webHostBuilder
+                .UseEnvironment("Testing")
+                .ConfigureServices(services => services.AddOptions())
+                .ConfigureServices(ConfigureServices)
                 .UseStartup<Startup>()
                 .UseWebRoot(_webRoot)
                 .ConfigureServices(services => services.AddScoped<DatabaseFixture>());
             Server = new TestServer(webHostBuilder);
+        }
+
+        void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
+        {
+            var config = context.Configuration.GetSection("LimpingTests");
+            services.Configure<LimpingConfiguration>(config);
         }
 
         public TestServer Server { get; }

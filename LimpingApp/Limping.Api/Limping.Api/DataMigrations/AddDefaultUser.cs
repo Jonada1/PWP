@@ -20,7 +20,7 @@ namespace Limping.Api.DataMigrations
             var defaultUser = new AppUser
             {
                 Email = "jonada.ferracaku@gmail.com",
-                Id = "1",
+                Id = "-1",
                 LimpingTests = new List<LimpingTest>(),
                 UserName = "jonada1",
             };

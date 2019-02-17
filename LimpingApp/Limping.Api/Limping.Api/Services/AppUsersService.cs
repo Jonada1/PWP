@@ -17,7 +17,7 @@ namespace Limping.Api.Services
 
         public async Task<AppUser> GetById(string id)
         {
-            var user = await _context.AppUsers.FindAsync(id);
+            var user = await _context.AppUsers.Include(x => x.LimpingTests).SingleOrDefaultAsync(x => x.Id == id);
             return user;
         }
 
