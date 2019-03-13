@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Halcyon.Web.HAL.Json;
 using Limping.Api.Configurations;
 using Limping.Api.Extensions;
 using Limping.Api.Models;
@@ -11,11 +12,13 @@ using Limping.Api.Services.Lifetimes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Scrutor;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Limping.Api
 {
@@ -33,8 +36,9 @@ namespace Limping.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services
+                .AddMvc();
+        
             services.AddDbContext<LimpingDbContext>
             (options => options.UseSqlServer
                 (
@@ -54,6 +58,12 @@ namespace Limping.Api
                     (typeof(IScopedService), ServiceLifetime.Scoped),
                     (typeof(ISingletonService), ServiceLifetime.Singleton)
                 }));
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Limping Data of Patients API", Version = "v1" });
+            });
         }
 
         // Dependency injection for classes
@@ -123,6 +133,18 @@ namespace Limping.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseMvc();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Limping Data of Patients API V1");
+            });
+
             app.UseMvc();
         }
     }
