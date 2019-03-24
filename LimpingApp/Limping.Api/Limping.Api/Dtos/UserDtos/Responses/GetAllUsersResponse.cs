@@ -15,7 +15,7 @@ namespace Limping.Api.Dtos.UserDtos.Responses
             this.AddEmbeddedCollection("users", userResponses);
             if (links == null)
             {
-                this.AddLinks(new Link("self", $"/api/Users/GetAllUsers"));
+                this.AddLinks(new Link("self", $"/api/Users/GetAllUsers", null, "GET"));
             }
             else
             {

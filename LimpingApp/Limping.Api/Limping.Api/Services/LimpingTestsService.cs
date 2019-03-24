@@ -47,7 +47,10 @@ namespace Limping.Api.Services
             var limpingTest = await _context.LimpingTests.FindAsync(testId);
             _context.Entry(limpingTest).State = EntityState.Modified;
             limpingTest.TestData = testData;
-            limpingTest.TestAnalysis = testAnalysis;
+            if (testAnalysis != null)
+            {
+                limpingTest.TestAnalysis = testAnalysis;
+            }
             limpingTest.Date = DateTime.Now;
             await _context.SaveChangesAsync();
             return limpingTest;
@@ -58,6 +61,12 @@ namespace Limping.Api.Services
             var limpingTest = await _context.LimpingTests.FindAsync(testId);
             _context.LimpingTests.Remove(limpingTest);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<LimpingTest>> GetAll()
+        {
+            var tests = await _context.LimpingTests.AsNoTracking().ToListAsync();
+            return tests;
         }
     }
 }

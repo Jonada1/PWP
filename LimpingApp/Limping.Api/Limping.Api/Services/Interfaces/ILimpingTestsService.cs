@@ -13,6 +13,7 @@ namespace Limping.Api.Services.Interfaces
         Task<LimpingTest> InsertTest(string userId, string testData, TestAnalysis testAnalysis);
         Task<LimpingTest> EditTest(Guid testId, string testData, TestAnalysis testAnalysis);
         Task DeleteTest(Guid testId);
+        Task<List<LimpingTest>> GetAll();
     }
 
 }

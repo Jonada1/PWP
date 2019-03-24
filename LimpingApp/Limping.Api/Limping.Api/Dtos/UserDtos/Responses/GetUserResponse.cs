@@ -14,8 +14,8 @@ namespace Limping.Api.Dtos.UserDtos.Responses
             if (links == null)
             {
                 this.AddLinks(
-                    new Link("self", $"/api/Users/GetById/{user.Id}"),
-                    new Link("limpingTests", $"/api/LimpingTests/GetForUser/{user.Id}")
+                    new Link("self", $"/api/Users/GetById/{user.Id}", null, "GET"),
+                    new Link("limpingTests", $"/api/LimpingTests/GetForUser/{user.Id}", null, "GET")
                 );
             }
             else

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Limping.Api.Dtos.UserDtos;
 using Limping.Api.Models;
-using Limping.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Halcyon.HAL;
-using Halcyon.Web.HAL;
 using Limping.Api.Dtos.UserDtos.Produces;
 using Limping.Api.Dtos.UserDtos.Responses;
 using Limping.Api.Services.Interfaces;
@@ -136,8 +133,9 @@ namespace Limping.Api.Controllers
             await _appUsersService.Edit(foundUser);
             var links = new List<Link>
             {
-                new Link("self", $"/api/Users/EditUser/{userId}"),
-                new Link("get", $"/api/Users/GetById/{userId}")
+                new Link("self", $"/api/Users/EditUser/{userId}", "PATCH"),
+                new Link("get", $"/api/Users/GetById/{userId}", null, "GET"),
+                new Link("delete", $"/api/Users/GetById/{userId}", null, "DELETE")
             };
             return Ok(new HALResponse(new UserDto(foundUser)).AddLinks(links));
         }
@@ -156,8 +154,8 @@ namespace Limping.Api.Controllers
             await _appUsersService.Delete(userId);
             var links = new List<Link>
             {
-                new Link("self", $"/api/Users/DeleteUser/{userId}"),
-                new Link("allUsers", "/api/Users/GetAllUsers")
+                new Link("self", $"/api/Users/DeleteUser/{userId}",null, "DELETE"),
+                new Link("allUsers", "/api/Users/GetAllUsers",null, "GET")
             };
             return Ok(new HALResponse(null).AddLinks(links));
         }
