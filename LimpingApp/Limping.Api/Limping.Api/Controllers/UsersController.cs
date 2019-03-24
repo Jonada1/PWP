@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Halcyon.HAL;
 using Halcyon.Web.HAL;
+using Limping.Api.Dtos.UserDtos.Produces;
+using Limping.Api.Dtos.UserDtos.Responses;
 using Limping.Api.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Limping.Api.Controllers
 {
@@ -25,26 +28,34 @@ namespace Limping.Api.Controllers
             _appUsersService = appUsersService;
         }
 
+        [HttpGet("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllUsersProduces))]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _appUsersService.GetAll();
+            var response = new GetAllUsersResponse(users);
+            return Ok(response);
+        }
+
         [HttpGet("[action]/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdProduces))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] string userId)
         {
-            var exists = _context.AppUsers.Any(usr => usr.Id == userId);
+            var exists = await _context.AppUsers.AnyAsync(usr => usr.Id == userId);
             if(!exists)
             {
                 return NotFound();
             }
             var user = await _appUsersService.GetById(userId);
-            var response = new GetUserResponse(
-                user, 
-                new List<Link> {
-                    new Link("self", $"/api/Users/GetById/{userId}")
-                }
-            );
+            var response = new GetUserResponse(user);
             return Ok(response);
         }
 
         [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdProduces))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto userDto)
         {
             if (!ModelState.IsValid)
@@ -80,6 +91,75 @@ namespace Limping.Api.Controllers
             );
                 return Ok(response);
             }
+        }
+
+        [HttpPatch("[action]/{userId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> EditUser([FromRoute]string userId, [FromBody] EditUserDto editUserDto)
+        {
+            if (!ModelState.IsValid || string.IsNullOrWhiteSpace(editUserDto.UserName) && string.IsNullOrWhiteSpace(editUserDto.Email))
+            {
+                return BadRequest(ModelState);
+            }
+            var exists = await _context.AppUsers.AnyAsync(usr => usr.Id == userId);
+            if (!exists)
+            {
+                return NotFound();
+            }
+
+            var foundUser = await _context.AppUsers.AsNoTracking().SingleAsync(user => user.Id == userId);
+            if (!string.IsNullOrWhiteSpace(editUserDto.UserName))
+            {
+                var usernameExists = await _context.AppUsers.AnyAsync(usr => usr.UserName == editUserDto.UserName);
+                if (usernameExists)
+                {
+                    return Conflict("Username exists");
+                }
+
+                foundUser.UserName = editUserDto.UserName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(editUserDto.Email))
+            {
+                var emailExists = await _context.AppUsers.AnyAsync(usr => usr.Email == editUserDto.Email);
+                if (emailExists)
+                {
+                    return Conflict("Email exists");
+                }
+
+                foundUser.Email = editUserDto.Email;
+            }
+
+            await _appUsersService.Edit(foundUser);
+            var links = new List<Link>
+            {
+                new Link("self", $"/api/Users/EditUser/{userId}"),
+                new Link("get", $"/api/Users/GetById/{userId}")
+            };
+            return Ok(new HALResponse(new UserDto(foundUser)).AddLinks(links));
+        }
+
+        [HttpDelete("[action]/{userId}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteUser([FromRoute] string userId)
+        {
+            var exists = await _context.AppUsers.AnyAsync(usr => usr.Id == userId);
+            if (!exists)
+            {
+                return NotFound();
+            }
+
+            await _appUsersService.Delete(userId);
+            var links = new List<Link>
+            {
+                new Link("self", $"/api/Users/DeleteUser/{userId}"),
+                new Link("allUsers", "/api/Users/GetAllUsers")
+            };
+            return Ok(new HALResponse(null).AddLinks(links));
         }
     }
 }
