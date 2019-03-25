@@ -19,7 +19,7 @@ The contents of each point was discussed and few changes were asked to be brough
 *ONLY USED BY COURSE STAFF: Additional comments from the course staff*
 
 ## Meeting 2.
-* **DATE:**
+* **DATE:** 26 Feb 2019
 * **ASSISTANTS: Ivan
 * **GRADE:** *To be filled by course staff*
 
