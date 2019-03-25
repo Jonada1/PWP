@@ -20,7 +20,7 @@ The contents of each point was discussed and few changes were asked to be brough
 
 ## Meeting 2.
 * **DATE:** 26 Feb 2019
-* **ASSISTANTS: Ivan
+* **ASSISTANTS:** Ivan
 * **GRADE:** *To be filled by course staff*
 
 ### Minutes
