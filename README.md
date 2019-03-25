@@ -1,6 +1,5 @@
 # PWP SPRING 2019
 # Limping Data of Patients
-# How to run
 ## Requirements
 * .NET Core 2.1.3 or Higher
 * Visual Studio 2017
