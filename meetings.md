@@ -20,14 +20,15 @@ The contents of each point was discussed and few changes were asked to be brough
 
 ## Meeting 2.
 * **DATE:**
-* **ASSISTANTS:**
+* **ASSISTANTS: Ivan
 * **GRADE:** *To be filled by course staff*
 
 ### Minutes
-*Summary of what was discussed during the meeting*
+During the meeting, the contents of each point was discussed. Overall structure of the document and test cases included was good but some small things were asked to be added.
 
 ### Action points
-*List here the actions points discussed with assistants*
+-Include a README file which will contain all relevant information about how to run the project, technologies, frameworks and libraries utilised.
+-Add one more test cases of database (Deletion of patient will eventually cause the deletion of tests and test analysis)
 
 
 ### Comments from staff
