@@ -15,15 +15,21 @@ namespace Limping.Api.Services
             _context = context;
         }
 
-        public async Task ReplaceTest(Guid testId, TestAnalysis newTest)
+        public async Task ReplaceTestAnalysis(Guid testId, TestAnalysis newTest)
         {
-            var oldTest = await _context.TestAnalyses.FindAsync(testId);
-            _context.TestAnalyses.Remove(oldTest);
-            _context.TestAnalyses.Add(newTest);
+            var test = await _context.LimpingTests.Include(x => x.TestAnalysis).SingleAsync(x => x.Id == testId);
+
+            if (test.TestAnalysis != null)
+            {
+                _context.TestAnalyses.Remove(test.TestAnalysis);
+            }
+
+            test.TestAnalysis = newTest;
+            _context.Entry(test).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
-        public async Task EditTest(TestAnalysis editedTest)
+        public async Task EditTestAnalysis(TestAnalysis editedTest)
         {
             var found = await _context.TestAnalyses.FindAsync(editedTest.Id);
             _context.Entry(found).CurrentValues.SetValues(editedTest);

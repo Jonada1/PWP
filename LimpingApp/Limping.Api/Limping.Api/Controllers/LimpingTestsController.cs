@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Halcyon.HAL;
+using Limping.Api.Constants;
 using Limping.Api.Dtos.LimpingTestDtos;
+using Limping.Api.Dtos.LimpingTestDtos.Responses;
 using Limping.Api.Models;
 using Limping.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +26,11 @@ namespace Limping.Api.Controllers
         }
 
         [HttpGet("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LimpingTestDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
         public async Task<IActionResult> GetAll()
         {
             var allTests = await _limpingTestsService.GetAll();
-            var response = allTests.Select(test => new LimpingTestDto(test));
+            var response = new GetMultipleLimpingTestsResponse(allTests);
             return Ok(response);
         }
 
@@ -41,12 +44,17 @@ namespace Limping.Api.Controllers
             }
 
             var userTests = await _limpingTestsService.GetUserTests(userId);
-            var response = userTests.Select(test => new LimpingTestDto(test));
+            var response = new GetMultipleLimpingTestsResponse(
+                userTests,
+                new Link("getForUser", $"{ControllerUrls.LimpingTests}GetForUser/{userId}",
+                    "Get limping tests for users", LinkMethods.GET),
+                new Link($"{ControllerUrls.AppUsers}GetById/{userId}", "Get user", LinkMethods.GET)
+            );
             return Ok(response);
         }
 
         [HttpGet("[action]/{limpingTestId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LimpingTestDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid limpingTestId)
         {
@@ -56,7 +64,7 @@ namespace Limping.Api.Controllers
                 return NotFound();
             }
             var limpingTest = await _limpingTestsService.GetById(limpingTestId);
-            var response = new LimpingTestDto(limpingTest);
+            var response = new GetLimpingTestResponse(limpingTest);
             return Ok(response);
         }
 
@@ -76,7 +84,7 @@ namespace Limping.Api.Controllers
             }
 
             var createdTest = await _limpingTestsService.InsertTest(createDto.AppUserId, createDto.TestData, createDto.TestAnalysis);
-            var response = new LimpingTestDto(createdTest);
+            var response = new GetLimpingTestResponse(createdTest, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Create","Create limping test", LinkMethods.POST));
             return Ok(response);
         }
 
@@ -97,7 +105,7 @@ namespace Limping.Api.Controllers
             }
 
             var edited = await _limpingTestsService.EditTest(testId, editTestDto.TestData, editTestDto.TestAnalysis);
-            var response = new LimpingTestDto(edited);
+            var response = new GetLimpingTestResponse(edited, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Edit/{testId}", "Edit limping test", LinkMethods.PATCH));
             return Ok(response);
         }
         [HttpDelete("[action]/{limpingTestId}")]
@@ -111,8 +119,11 @@ namespace Limping.Api.Controllers
                 return NotFound();
             }
 
+            var limpingTest = await _limpingTestsService.GetById(limpingTestId);
+            _context.Entry(limpingTest).State = EntityState.Detached;
             await _limpingTestsService.DeleteTest(limpingTestId);
-            return NoContent();
+            var response = new GetLimpingTestResponse(limpingTest, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Delete/{limpingTestId}", "Delete limping test", LinkMethods.DELETE));
+            return Ok();
         }
     }
 }

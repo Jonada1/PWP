@@ -70,7 +70,7 @@ namespace Limping.Api.Tests.Services
                     LimpingSeverity = LimpingSeverityEnum.High,
                     LimpingTestId = limpingTest.Id,
                 };
-                await service.EditTest(editAnalysis);
+                await service.EditTestAnalysis(editAnalysis);
                 context.Entry(editAnalysis).State = EntityState.Detached;
 
                 var found = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);
@@ -78,7 +78,7 @@ namespace Limping.Api.Tests.Services
                 Assert.Equal(editAnalysis.EndValue, found.EndValue);
                 Assert.Equal(editAnalysis.LimpingSeverity, found.LimpingSeverity);
                 limpingTest.TestAnalysis.Id = Guid.NewGuid();
-                await Assert.ThrowsAnyAsync<Exception>(() => service.EditTest(limpingTest.TestAnalysis));
+                await Assert.ThrowsAnyAsync<Exception>(() => service.EditTestAnalysis(limpingTest.TestAnalysis));
                 var newAnalysis = new TestAnalysis
                 {
                     Id = Guid.NewGuid(),
@@ -87,7 +87,7 @@ namespace Limping.Api.Tests.Services
                     LimpingSeverity = LimpingSeverityEnum.High,
                     LimpingTestId = limpingTest.Id,
                 };
-                await service.ReplaceTest(editAnalysis.Id, newAnalysis);
+                await service.ReplaceTestAnalysis(editAnalysis.LimpingTestId, newAnalysis);
                 context.Entry(newAnalysis).State = EntityState.Detached;
                 var replacedAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == newAnalysis.Id);
                 var nullAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);

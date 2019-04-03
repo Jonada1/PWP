@@ -8,7 +8,7 @@ namespace Limping.Api.Services.Interfaces
 {
     public interface ITestAnalysesService
     {
-        Task ReplaceTest(Guid testId, TestAnalysis newTest);
-        Task EditTest(TestAnalysis editedTest);
+        Task ReplaceTestAnalysis(Guid testId, TestAnalysis newTest);
+        Task EditTestAnalysis(TestAnalysis editedTest);
     }
 }
