@@ -6,8 +6,11 @@ using Limping.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Halcyon.HAL;
+using Limping.Api.Constants;
+using Limping.Api.Dtos;
 using Limping.Api.Dtos.UserDtos.Produces;
 using Limping.Api.Dtos.UserDtos.Responses;
+using Limping.Api.Extensions;
 using Limping.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +43,7 @@ namespace Limping.Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] string userId)
         {
             var exists = await _context.AppUsers.AnyAsync(usr => usr.Id == userId);
-            if(!exists)
+            if (!exists)
             {
                 return NotFound();
             }
@@ -80,12 +83,9 @@ namespace Limping.Api.Controllers
                 await _context.SaveChangesAsync();
 
                 var response = new GetUserResponse(
-                user,
-                new List<Link> {
-                    new Link("self", "/api/Users/CreateUser"),
-                    new Link("get", $"/api/Users/GetById/{user.Id}")
-                }
-            );
+                    user,
+                    new LinkExtended("create", $"{ControllerUrls.AppUsers}CreateUser", "Create user", LinkMethods.POST, nameof(CreateUserDto))
+                );
                 return Ok(response);
             }
         }
@@ -131,18 +131,16 @@ namespace Limping.Api.Controllers
             }
 
             await _appUsersService.Edit(foundUser);
-            var links = new List<Link>
-            {
-                new Link("self", $"/api/Users/EditUser/{userId}", "PATCH"),
-                new Link("get", $"/api/Users/GetById/{userId}", null, "GET"),
-                new Link("delete", $"/api/Users/GetById/{userId}", null, "DELETE")
-            };
-            return Ok(new HALResponse(new UserDto(foundUser)).AddLinks(links));
+            var response = new GetUserResponse(
+                foundUser,
+                new LinkExtended("edit", $"{ControllerUrls.AppUsers}EditUser/{foundUser.Id}", "Edit user", LinkMethods.PATCH, nameof(EditUserDto))                
+            );
+            return Ok(response);
         }
 
         [HttpDelete("[action]/{userId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseWithLinksOnly))]
         public async Task<IActionResult> DeleteUser([FromRoute] string userId)
         {
             var exists = await _context.AppUsers.AnyAsync(usr => usr.Id == userId);

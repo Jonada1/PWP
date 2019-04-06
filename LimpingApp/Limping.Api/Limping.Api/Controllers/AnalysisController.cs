@@ -67,7 +67,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPatch("[action]/{testAnalysisId}")]
+        [HttpPut("[action]/{testAnalysisId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TestAnalysisDto))]

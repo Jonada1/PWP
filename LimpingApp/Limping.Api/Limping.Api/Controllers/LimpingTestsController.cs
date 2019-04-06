@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Halcyon.HAL;
 using Limping.Api.Constants;
+using Limping.Api.Dtos;
 using Limping.Api.Dtos.LimpingTestDtos;
 using Limping.Api.Dtos.LimpingTestDtos.Responses;
 using Limping.Api.Models;
@@ -35,6 +36,7 @@ namespace Limping.Api.Controllers
         }
 
         [HttpGet("[action]/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
         public async Task<IActionResult> GetForUser([FromRoute] string userId)
         {
             var userExists = await _context.AppUsers.AnyAsync(user => user.Id == userId);
@@ -54,7 +56,7 @@ namespace Limping.Api.Controllers
         }
 
         [HttpGet("[action]/{limpingTestId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid limpingTestId)
         {
@@ -69,8 +71,9 @@ namespace Limping.Api.Controllers
         }
 
         [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LimpingTestDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreateLimpingTestDto createDto)
         {
             if (!ModelState.IsValid || string.IsNullOrWhiteSpace(createDto.TestData))
@@ -83,13 +86,20 @@ namespace Limping.Api.Controllers
                 return NotFound("The user was not found");
             }
 
-            var createdTest = await _limpingTestsService.InsertTest(createDto.AppUserId, createDto.TestData, createDto.TestAnalysis);
+            var testAnalysisDto = createDto.TestAnalysis;
+            var testAnalysis = new TestAnalysis
+            {
+                Description = testAnalysisDto.Description,
+                EndValue = testAnalysisDto.EndValue,
+                LimpingSeverity = testAnalysisDto.LimpingSeverity,
+            };
+            var createdTest = await _limpingTestsService.InsertTest(createDto.AppUserId, createDto.TestData, testAnalysis);
             var response = new GetLimpingTestResponse(createdTest, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Create","Create limping test", LinkMethods.POST));
             return Ok(response);
         }
 
         [HttpPatch("[action]/{testId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LimpingTestDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Edit([FromRoute] Guid testId, [FromBody] EditLimpingTestDto editTestDto)
@@ -109,7 +119,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
         [HttpDelete("[action]/{limpingTestId}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LimpingTestDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseWithLinksOnly))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] Guid limpingTestId)
         {
@@ -122,8 +132,13 @@ namespace Limping.Api.Controllers
             var limpingTest = await _limpingTestsService.GetById(limpingTestId);
             _context.Entry(limpingTest).State = EntityState.Detached;
             await _limpingTestsService.DeleteTest(limpingTestId);
-            var response = new GetLimpingTestResponse(limpingTest, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Delete/{limpingTestId}", "Delete limping test", LinkMethods.DELETE));
-            return Ok();
+            var response = new HALResponse(null).AddLinks(
+                new Link("self", $"{ControllerUrls.LimpingTests}Delete/{limpingTestId}", "Delete limping test", LinkMethods.DELETE),
+                new Link("getAll", $"{ControllerUrls.LimpingTests}GetAll/{limpingTest.Id}", "Get all limping tests", LinkMethods.GET),
+                new Link("getForUser", $"{ControllerUrls.LimpingTests}GetForUser/{limpingTest.Id}", "Get for user", LinkMethods.GET),
+                new Link("user", $"{ControllerUrls.AppUsers}GetById/{limpingTest.AppUserId}", "Get user", LinkMethods.GET)                
+            );
+            return Ok(response);
         }
     }
 }

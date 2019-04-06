@@ -9,5 +9,6 @@ namespace Limping.Api.Dtos.UserDtos.Produces
 {
     public class GetUserByIdProduces: UserDto
     {
+        public List<Link> _links { get; set; }
     }
 }
