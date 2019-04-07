@@ -49,7 +49,13 @@ namespace Limping.Api.Services
             limpingTest.TestData = testData;
             if (testAnalysis != null)
             {
-                limpingTest.TestAnalysis = testAnalysis;
+                _context.Entry(limpingTest).Reference(x => x.TestAnalysis).Load();
+                var oldAnalysis = limpingTest.TestAnalysis;
+                _context.Entry(oldAnalysis).State = EntityState.Modified;
+                oldAnalysis.Description = testAnalysis.Description;
+                oldAnalysis.EndValue = testAnalysis.EndValue;
+                oldAnalysis.LimpingSeverity = testAnalysis.LimpingSeverity;
+
             }
             limpingTest.Date = DateTime.Now;
             await _context.SaveChangesAsync();

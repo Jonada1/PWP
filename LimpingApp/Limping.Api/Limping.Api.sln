@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Limping.Api", "Limping.Api\Limping.Api.csproj", "{63EEB78A-934A-4C6B-BF9F-77A39665C093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Limping.Api.Tests", "Limping.Api.Tests\Limping.Api.Tests.csproj", "{0D044813-3F0A-40F5-832D-F43F046DE1EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Limping.Api.Tests", "Limping.Api.Tests\Limping.Api.Tests.csproj", "{0D044813-3F0A-40F5-832D-F43F046DE1EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

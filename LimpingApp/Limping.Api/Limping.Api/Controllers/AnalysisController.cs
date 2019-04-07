@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Limping.Api.Dtos.TestAnalysisDtos;
+using Limping.Api.Dtos.TestAnalysisDtos.Responses;
 using Limping.Api.Models;
 using Limping.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Limping.Api.Controllers
 
         [HttpGet("[action]/{analysisId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TestAnalysisDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]
         public async Task<IActionResult> GetById([FromRoute] Guid analysisId)
         {
             var exists = await _context.TestAnalyses.AnyAsync(x => x.Id == analysisId);
@@ -42,7 +43,7 @@ namespace Limping.Api.Controllers
         [HttpPut("[action]/{testId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TestAnalysisDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]
         public async Task<IActionResult> UpsertTestAnalysis([FromRoute]Guid testId, [FromBody]ReplaceTestAnalysisDto testAnalysisDto)
         {
             if (!ModelState.IsValid)
@@ -58,8 +59,8 @@ namespace Limping.Api.Controllers
             var testAnalysis = new TestAnalysis
             {
                 Description = testAnalysisDto.Description,
-                EndValue = testAnalysisDto.EndValue,
-                LimpingSeverity = testAnalysisDto.LimpingSeverity,
+                EndValue = testAnalysisDto.EndValue.GetValueOrDefault(),
+                LimpingSeverity = testAnalysisDto.LimpingSeverity.GetValueOrDefault(),
                 LimpingTestId = testId,
             };
             await _testAnalysesService.ReplaceTestAnalysis(testId, testAnalysis);
@@ -70,7 +71,7 @@ namespace Limping.Api.Controllers
         [HttpPut("[action]/{testAnalysisId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TestAnalysisDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]
         public async Task<IActionResult> EditTestAnalysis([FromRoute] Guid testAnalysisId,
             [FromBody] ReplaceTestAnalysisDto testAnalysisDto)
         {
@@ -86,8 +87,8 @@ namespace Limping.Api.Controllers
 
             var testAnalysis = await _context.TestAnalyses.AsNoTracking().SingleAsync(x => x.Id == testAnalysisId);
             testAnalysis.Description = testAnalysisDto.Description;
-            testAnalysis.EndValue = testAnalysisDto.EndValue;
-            testAnalysis.LimpingSeverity = testAnalysisDto.LimpingSeverity;
+            testAnalysis.EndValue = testAnalysisDto.EndValue.GetValueOrDefault();
+            testAnalysis.LimpingSeverity = testAnalysisDto.LimpingSeverity.GetValueOrDefault();
             await _testAnalysesService.EditTestAnalysis(testAnalysis);
             var response = new TestAnalysisDto(testAnalysis);
             return Ok(response);

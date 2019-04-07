@@ -40,17 +40,16 @@ namespace Limping.Api
                 .AddMvc();
         
             services.AddDbContext<LimpingDbContext>
-            (options => options.UseSqlServer
+            (options => options.UseNpgsql
                 (
             _limpingConfigurations.Value.Services?.Database.ConnectionString
-                          ?? "Server=(localdb)\\mssqllocaldb;Database=LimpingDatabaseTest;Trusted_Connection=True;"
+                          ?? "Host=localhost;Port=5440;Database=LimpingDatabaseTest;Username=postgres;Password=postgres;"
                 )
             );
 
             services.AddTransient<ILimpingTestsService, LimpingTestsService>();
             services.AddTransient<IAppUsersService, AppUsersService>();
             services.AddTransient<ITestAnalysesService, TestAnalysesService>();
-
             services.Scan(source => ScanAssemblyOf<Startup>(source, services,
                 new List<(Type LifetimeMarker, ServiceLifetime Lifetime)>
                 {

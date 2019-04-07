@@ -1,0 +1,17 @@
+version: "3"
+
+volumes:
+    postgres_data:
+        driver: local
+
+services:
+    postgres:
+        image: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "5440:5432"

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Limping.Api.Dtos.TestAnalysisDtos;
 using Limping.Api.Models;
 
 namespace Limping.Api.Dtos.LimpingTestDtos
@@ -11,6 +12,6 @@ namespace Limping.Api.Dtos.LimpingTestDtos
     {
         [Required]
         public string TestData { get; set; }
-        public TestAnalysis TestAnalysis { get; set; }
+        public ReplaceTestAnalysisDto TestAnalysis { get; set; }
     }
 }

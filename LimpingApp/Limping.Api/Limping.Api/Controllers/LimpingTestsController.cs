@@ -90,8 +90,8 @@ namespace Limping.Api.Controllers
             var testAnalysis = new TestAnalysis
             {
                 Description = testAnalysisDto.Description,
-                EndValue = testAnalysisDto.EndValue,
-                LimpingSeverity = testAnalysisDto.LimpingSeverity,
+                EndValue = testAnalysisDto.EndValue.GetValueOrDefault(),
+                LimpingSeverity = testAnalysisDto.LimpingSeverity.GetValueOrDefault(),
             };
             var createdTest = await _limpingTestsService.InsertTest(createDto.AppUserId, createDto.TestData, testAnalysis);
             var response = new GetLimpingTestResponse(createdTest, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Create","Create limping test", LinkMethods.POST));
@@ -113,8 +113,19 @@ namespace Limping.Api.Controllers
             {
                 return NotFound();
             }
-
-            var edited = await _limpingTestsService.EditTest(testId, editTestDto.TestData, editTestDto.TestAnalysis);
+            var testAnalysisDto = editTestDto.TestAnalysis;
+            TestAnalysis testAnalysis = null;
+            if (testAnalysisDto != null)
+            {
+                testAnalysis = new TestAnalysis
+                {
+                    Description = testAnalysisDto.Description,
+                    EndValue = testAnalysisDto.EndValue.GetValueOrDefault(),
+                    LimpingSeverity = testAnalysisDto.LimpingSeverity.GetValueOrDefault(),
+                    LimpingTestId = testId
+                };
+            }
+            var edited = await _limpingTestsService.EditTest(testId, editTestDto.TestData, testAnalysis);
             var response = new GetLimpingTestResponse(edited, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Edit/{testId}", "Edit limping test", LinkMethods.PATCH));
             return Ok(response);
         }
