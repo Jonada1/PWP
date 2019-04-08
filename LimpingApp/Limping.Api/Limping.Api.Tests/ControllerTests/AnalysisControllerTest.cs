@@ -64,6 +64,23 @@ namespace Limping.Api.Tests.ControllerTests
         }
 
         [Fact]
+        public async Task EditNotFoundTest()
+        {
+            using (var scope = await CreateScopeWithLimpingTestAsync())
+            {
+                using (var response = await SendEditTestRequest(Guid.NewGuid(), new ReplaceTestAnalysisDto
+                {
+                    Description = "Good result",
+                    EndValue = 2,
+                    LimpingSeverity = LimpingSeverityEnum.Low,
+                }))
+                {
+                    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+                }
+            }
+        }
+
+        [Fact]
         public async Task GetByIdOkTest()
         {
             using (var scope = await CreateScopeWithLimpingTestAsync())
@@ -106,6 +123,35 @@ namespace Limping.Api.Tests.ControllerTests
                     using (var response = await SendEditTestRequest(_defaultLimpingTest.TestAnalysis.Id, limpingBadRequest))
                     {
                         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+                    }
+                }
+            }
+        }
+
+        [Fact]
+        public async Task EditOkTest()
+        {
+            using (var scope = await CreateScopeWithLimpingTestAsync())
+            {
+                var goodRequests = new List<Object>
+                {
+                    new ReplaceTestAnalysisDto
+                    {
+                        EndValue = 1,
+                        LimpingSeverity = LimpingSeverityEnum.High,
+                    },
+                    new ReplaceTestAnalysisDto
+                    {
+                        Description = "blabla",
+                        EndValue = 1,
+                        LimpingSeverity = LimpingSeverityEnum.Medium,
+                    }
+                };
+                foreach (var goodRequest in goodRequests)
+                {
+                    using (var response = await SendEditTestRequest(_defaultLimpingTest.TestAnalysis.Id, goodRequest))
+                    {
+                        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                     }
                 }
             }

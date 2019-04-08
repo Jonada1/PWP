@@ -290,7 +290,7 @@ namespace Limping.Api.Tests.ControllerTests
                         TestData = "'a':'b'",
                         AppUserId = _defaultUser.Id,
                     },
-                    new CreateLimpingTestDto
+                    new CreateLimpingTestDto 
                     {
                         TestData = "'a': 'b'",
                         AppUserId = _defaultUser.Id,
