@@ -13,8 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Limping.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class AnalysisController : ControllerBase
+    public class AnalysisController : LimpingControllerBase
     {
         private readonly LimpingDbContext _context;
         private readonly ITestAnalysesService _testAnalysesService;

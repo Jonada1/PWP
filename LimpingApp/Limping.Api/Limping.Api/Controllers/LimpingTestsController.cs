@@ -15,8 +15,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Limping.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class LimpingTestsController : ControllerBase
+    public class LimpingTestsController : LimpingControllerBase
     {
         private readonly LimpingDbContext _context;
         private readonly ILimpingTestsService _limpingTestsService;

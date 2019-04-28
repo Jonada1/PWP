@@ -17,8 +17,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Limping.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : LimpingControllerBase
     {
         private readonly LimpingDbContext _context;
         private readonly IAppUsersService _appUsersService;
