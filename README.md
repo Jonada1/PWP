@@ -3,7 +3,9 @@
 ## Requirements
 * .NET Core 2.1.3 or Higher
 * Visual Studio 2017
+* Docker
 ## How to run
+* Run in a Command Prompt "docker-compose up" to create the postgresql database.
 * Restoring dependencies should happen automatically when you run the application
 * Run by pressing F5
 ## Dependencies
