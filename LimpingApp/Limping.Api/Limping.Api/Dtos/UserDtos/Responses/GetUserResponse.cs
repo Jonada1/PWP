@@ -16,9 +16,9 @@ namespace Limping.Api.Dtos.UserDtos.Responses
             this.AddLinks(
                 new LinkExtended("edit", $"{ControllerUrls.AppUsers}EditUser/{user.Id}", "Edit user", LinkMethods.PATCH, nameof(EditUserDto)),
                 new LinkExtended("create", $"{ControllerUrls.AppUsers}CreateUser", "Create user", LinkMethods.POST, nameof(CreateUserDto)),
-                new Link("delete", $"{ControllerUrls.AppUsers}/Delete/{user.Id}", "Delete user", LinkMethods.DELETE),
-                new Link("getAll", $"{ControllerUrls.AppUsers}/GetAll", "Get all users", LinkMethods.GET),
-                new Link("limpingTests", $"{ControllerUrls.LimpingTests}/GetForUser/{user.Id}","Get limping tests for user", LinkMethods.GET)
+                new Link("delete", $"{ControllerUrls.AppUsers}Delete/{user.Id}", "Delete user", LinkMethods.DELETE),
+                new Link("getAll", $"{ControllerUrls.AppUsers}GetAll", "Get all users", LinkMethods.GET),
+                new Link("limpingTests", $"{ControllerUrls.LimpingTests}GetForUser/{user.Id}","Get limping tests for user", LinkMethods.GET)
             );
 
             // Add self link if it was passed otherwise create it

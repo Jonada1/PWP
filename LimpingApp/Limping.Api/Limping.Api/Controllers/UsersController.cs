@@ -27,7 +27,7 @@ namespace Limping.Api.Controllers
             _appUsersService = appUsersService;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllUsersProduces))]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -36,7 +36,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("[action]/{userId}")]
+        [HttpGet("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] string userId)
@@ -51,7 +51,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserByIdProduces))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -83,13 +83,13 @@ namespace Limping.Api.Controllers
 
                 var response = new GetUserResponse(
                     user,
-                    new LinkExtended("create", $"{ControllerUrls.AppUsers}CreateUser", "Create user", LinkMethods.POST, nameof(CreateUserDto))
+                    new LinkExtended("self", $"{ControllerUrls.AppUsers}CreateUser", "Create user", LinkMethods.POST, nameof(CreateUserDto))
                 );
                 return Ok(response);
             }
         }
 
-        [HttpPatch("[action]/{userId}")]
+        [HttpPatch("{userId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -137,7 +137,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("[action]/{userId}")]
+        [HttpDelete("{userId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseWithLinksOnly))]
         public async Task<IActionResult> DeleteUser([FromRoute] string userId)

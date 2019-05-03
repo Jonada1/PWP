@@ -38,7 +38,7 @@ namespace Limping.Api
         {
             services
                 .AddMvc();
-        
+            services.AddRouting(routeOptions => routeOptions.LowercaseUrls = true);
             services.AddDbContext<LimpingDbContext>
             (options => options.UseNpgsql
                 (
@@ -135,7 +135,13 @@ namespace Limping.Api
             app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            app.UseSwagger(o =>
+            {
+                o.PreSerializeFilters.Add((document, request) =>
+                 {
+                     document.Paths = document.Paths.ToDictionary(p => p.Key.ToLowerInvariant(), p => p.Value);
+                 });
+            });
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
             // specifying the Swagger JSON endpoint.

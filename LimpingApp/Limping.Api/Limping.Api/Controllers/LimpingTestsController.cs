@@ -25,7 +25,7 @@ namespace Limping.Api.Controllers
             _limpingTestsService = limpingTestsService;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
         public async Task<IActionResult> GetAll()
         {
@@ -34,7 +34,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("[action]/{userId}")]
+        [HttpGet("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMultipleLimpingTestResponseProduces))]
         public async Task<IActionResult> GetForUser([FromRoute] string userId)
         {
@@ -54,7 +54,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("[action]/{limpingTestId}")]
+        [HttpGet("{limpingTestId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid limpingTestId)
@@ -69,7 +69,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,7 +97,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPatch("[action]/{testId}")]
+        [HttpPatch("{testId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetLimpingTestResponse.GetLimpingTestResponseProduces))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -128,7 +128,7 @@ namespace Limping.Api.Controllers
             var response = new GetLimpingTestResponse(edited, selfLink: new Link("self", $"{ControllerUrls.LimpingTests}Edit/{testId}", "Edit limping test", LinkMethods.PATCH));
             return Ok(response);
         }
-        [HttpDelete("[action]/{limpingTestId}")]
+        [HttpDelete("{limpingTestId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseWithLinksOnly))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] Guid limpingTestId)
