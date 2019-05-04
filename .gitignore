@@ -1,6 +1,6 @@
 *.suo
 *.user
-_ReSharper.*
+_ReSharper.
 **/bin
 **/obj
 packages
