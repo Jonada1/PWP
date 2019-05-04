@@ -15,7 +15,6 @@ using Limping.Api.Tests.Fixtures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using SQLitePCL;
 using Xunit;
 
 namespace Limping.Api.Tests.ControllerTests
