@@ -13,8 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Limping.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class AnalysisController : ControllerBase
+    public class AnalysisController : LimpingControllerBase
     {
         private readonly LimpingDbContext _context;
         private readonly ITestAnalysesService _testAnalysesService;
@@ -24,7 +23,7 @@ namespace Limping.Api.Controllers
             _testAnalysesService = testAnalysesService;
         }
 
-        [HttpGet("[action]/{analysisId}")]
+        [HttpGet("{analysisId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]
         public async Task<IActionResult> GetById([FromRoute] Guid analysisId)
@@ -40,7 +39,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut("[action]/{testId}")]
+        [HttpPut("{testId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]
@@ -68,7 +67,7 @@ namespace Limping.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut("[action]/{testAnalysisId}")]
+        [HttpPut("replace/{testAnalysisId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTestAnalysisProduces))]

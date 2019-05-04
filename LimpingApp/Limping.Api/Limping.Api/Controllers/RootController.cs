@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Limping.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class RootController : ControllerBase
+    public class RootController : LimpingControllerBase
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseWithLinksOnly))]

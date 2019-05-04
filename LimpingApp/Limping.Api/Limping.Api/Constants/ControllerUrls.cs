@@ -8,8 +8,8 @@ namespace Limping.Api.Constants
 {
     public static class ControllerUrls
     {
-        public const string LimpingTests = "/api/LimpingTests/";
-        public const string AppUsers = "/api/Users/";
-        public const string Analysis = "/api/Analysis/";
+        public const string LimpingTests = "/api/limpingtests/";
+        public const string AppUsers = "/api/users/";
+        public const string Analysis = "/api/analysis/";
     }
 }
