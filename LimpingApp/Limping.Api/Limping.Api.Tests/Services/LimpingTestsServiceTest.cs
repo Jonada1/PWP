@@ -52,15 +52,19 @@ namespace Limping.Api.Tests.Services
         {
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
+                // Setup
                 var databaseFixture = scope.ServiceProvider.GetRequiredService<DatabaseFixture>();
                 var context = databaseFixture.Context;
                 await AddDefaultDataForLimping(context);
 
+                // Test insertion works
                 var service = scope.ServiceProvider.GetRequiredService<ILimpingTestsService>();
                 var added = await service.InsertTest("1", _data, GetTestAnalysis());
                 context.Entry(added).State = EntityState.Detached;
                 var foundTest = await context.LimpingTests.FindAsync(added.Id);
+                // The inserted user was found
                 Assert.NotNull(foundTest);
+                // Test Inserting a limping test to a nonexistent user
                 await Assert.ThrowsAnyAsync<Exception>(() => service.InsertTest("2", _data, GetTestAnalysis()));
             }
         }
@@ -70,6 +74,7 @@ namespace Limping.Api.Tests.Services
         {
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
+                // Setup
                 var databaseFixture = scope.ServiceProvider.GetRequiredService<DatabaseFixture>();
                 var context = databaseFixture.Context;
                 await AddDefaultDataForLimping(context);
@@ -83,10 +88,15 @@ namespace Limping.Api.Tests.Services
                 };
                 context.LimpingTests.Add(limpingTest);
                 await context.SaveChangesAsync();
+
+
+                // Test deletion works
                 await service.DeleteTest(limpingTest.Id);
                 Assert.Equal(_data, limpingTest.TestData);
                 var nullTest = await context.LimpingTests.FindAsync(limpingTest.Id);
+                // Assure it is deleted from db
                 Assert.Null(nullTest);
+                // You cannot delete it twice
                 await Assert.ThrowsAnyAsync<Exception>(() => service.DeleteTest(limpingTest.Id));
             }
         }
@@ -96,6 +106,7 @@ namespace Limping.Api.Tests.Services
         {
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
+                // Setup
                 var databaseFixture = scope.ServiceProvider.GetRequiredService<DatabaseFixture>();
                 var context = databaseFixture.Context;
                 await AddDefaultDataForLimping(context);
@@ -109,9 +120,12 @@ namespace Limping.Api.Tests.Services
                 };
                 context.LimpingTests.Add(limpingTest);
                 await context.SaveChangesAsync();
+
                 var newTestData = "{numbers: [1,2]}";
                 var edited = await service.EditTest(limpingTest.Id, newTestData, GetTestAnalysis());
+                // Test editing works
                 Assert.Equal(newTestData, edited.TestData);
+                // You cannot edit what doesn't exist
                 await Assert.ThrowsAnyAsync<Exception>(() =>
                     service.EditTest(Guid.NewGuid(), "{numbers: [1, 2, 3]}", GetTestAnalysis()));
             }
@@ -135,10 +149,16 @@ namespace Limping.Api.Tests.Services
                 };
                 context.LimpingTests.Add(limpingTest);
                 await context.SaveChangesAsync();
+
                 var foundTest = await service.GetById(limpingTest.Id);
+                // The user was found testing
                 Assert.Equal(limpingTest.Id, foundTest.Id);
+
+                // Null if user doesn't exist
                 var nullTest = await service.GetById(Guid.NewGuid());
                 Assert.Null(nullTest);
+
+                // Returns user if it was created
                 var testsOfUser = await service.GetUserTests("1");
                 Assert.Single(testsOfUser);
             }

@@ -6,6 +6,10 @@
     <UserSecretsId>0e082358-aed0-4ade-bec9-2662a1189e7c</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\Limping.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>

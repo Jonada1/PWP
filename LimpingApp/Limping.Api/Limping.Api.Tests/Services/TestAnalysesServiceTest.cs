@@ -58,10 +58,14 @@ namespace Limping.Api.Tests.Services
         {
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
+
+                // Setup
                 var databaseFixture = scope.ServiceProvider.GetRequiredService<DatabaseFixture>();
                 var context = databaseFixture.Context;
                 var limpingTest = await AddDefaultDataForAnalysis(context);
                 var service = scope.ServiceProvider.GetRequiredService<ITestAnalysesService>();
+
+                // Edit an analysis
                 var editAnalysis = new TestAnalysis
                 {
                     Id = limpingTest.TestAnalysis.Id,
@@ -72,13 +76,18 @@ namespace Limping.Api.Tests.Services
                 };
                 await service.EditTestAnalysis(editAnalysis);
                 context.Entry(editAnalysis).State = EntityState.Detached;
-
                 var found = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);
+
+                // Test that it was correctly edited
                 Assert.Equal(editAnalysis.Description, found.Description);
                 Assert.Equal(editAnalysis.EndValue, found.EndValue);
                 Assert.Equal(editAnalysis.LimpingSeverity, found.LimpingSeverity);
+
+                // You cannot edit something that doesn't exist
                 limpingTest.TestAnalysis.Id = Guid.NewGuid();
                 await Assert.ThrowsAnyAsync<Exception>(() => service.EditTestAnalysis(limpingTest.TestAnalysis));
+
+                // Test replacing
                 var newAnalysis = new TestAnalysis
                 {
                     Id = Guid.NewGuid(),
@@ -91,7 +100,10 @@ namespace Limping.Api.Tests.Services
                 context.Entry(newAnalysis).State = EntityState.Detached;
                 var replacedAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == newAnalysis.Id);
                 var nullAnalysis = await context.TestAnalyses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == editAnalysis.Id);
+                // The replaced test is there
                 Assert.NotNull(replacedAnalysis);
+
+                // The old one is not
                 Assert.Null(nullAnalysis);
             }
         }

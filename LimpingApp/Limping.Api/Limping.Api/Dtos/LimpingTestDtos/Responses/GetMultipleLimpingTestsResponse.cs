@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Halcyon.HAL;
 using Limping.Api.Constants;
 using Limping.Api.Models;
+using Limping.Api.Utils;
 
 namespace Limping.Api.Dtos.LimpingTestDtos.Responses
 {
@@ -12,7 +13,11 @@ namespace Limping.Api.Dtos.LimpingTestDtos.Responses
     {
         public GetMultipleLimpingTestsResponse(List<LimpingTest> tests, Link selfLink = null, params Link[] links) : base(null)
         {
-            this.AddLinks(selfLink ?? new Link("self", $"{ControllerUrls.LimpingTests}GetAll", "Get all limping tests", LinkMethods.GET));
+            this.AddLinks(
+                selfLink ?? LinkGenerator.LimpingTests.GetAll("self"),
+                LinkGenerator.LimpingTests.Create(),
+                LinkGenerator.Users.GetAll()
+            );
 
             this.AddLinks(links);
 

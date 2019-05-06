@@ -12,6 +12,7 @@ using Limping.Api.Dtos.UserDtos;
 using Limping.Api.Models;
 using Limping.Api.Services.Interfaces;
 using Limping.Api.Tests.Fixtures;
+using Limping.Api.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -29,6 +30,10 @@ namespace Limping.Api.Tests.ControllerTests
         {
             _fixture = fixture;
         }
+
+        #region Scopes for the request
+
+        // Create scopes that live in a single test 
 
         private async Task<IServiceScope> CreateScopeWithUserAsync()
         {
@@ -54,10 +59,13 @@ namespace Limping.Api.Tests.ControllerTests
             });
             return scope;
         }
+        #endregion
+
 
         [Fact]
         public async Task GetAll()
         {
+            // Test that get all returns Ok
             using (var scope = await CreateScopeWithUserAsync())
             {
                 using (var response = await SendGetAll())
@@ -66,10 +74,15 @@ namespace Limping.Api.Tests.ControllerTests
                 }
             }
         }
+
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendGetAll()
         {
             return await _fixture.Server
-                .CreateRequest($"{ControllerUrls.LimpingTests}GetAll").GetAsync();
+                .CreateRequest(LinkGenerator.LimpingTests.GetAll().Href).GetAsync();
         }
 
         [Fact]
@@ -91,10 +104,14 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendGetForUserRequest(string userId)
         {
             return await _fixture.Server
-                .CreateRequest($"{ControllerUrls.LimpingTests}GetForUser/{userId}").GetAsync();
+                .CreateRequest(LinkGenerator.LimpingTests.GetForUser(userId).Href).GetAsync();
         }
 
         [Fact]
@@ -116,10 +133,14 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendGetByIdRequest(Guid limpingTestId)
         {
             return await _fixture.Server
-                .CreateRequest($"{ControllerUrls.LimpingTests}GetById/{limpingTestId}").GetAsync();
+                .CreateRequest(LinkGenerator.LimpingTests.GetSingle(limpingTestId.ToString()).Href).GetAsync();
         }
 
         [Fact]
@@ -127,7 +148,7 @@ namespace Limping.Api.Tests.ControllerTests
         {
             using (var scope = await CreateScopeWithLimpingTestAsync())
             {
-                // Test not found
+                // Test not found for non existent test
                 using (var response = await SendEditRequest(Guid.NewGuid(), new EditLimpingTestDto
                 {
                     TestData = "'a':'b'",
@@ -141,19 +162,24 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task EditBadRequestTest()
         {
+            // Test bad request scenarios for edit
             using (var scope = await CreateScopeWithLimpingTestAsync())
             {
                 var badRequestObjects = new List<Object>
                 {
+                    // Empty
                     new { },
+                    // Test data empty
                     new EditLimpingTestDto
                     {
                         TestData = ""
                     },
+                    // Test data null
                     new EditLimpingTestDto
                     {
                         TestData = null
                     },
+                    //  Missing test data with provided test analysis
                     new EditLimpingTestDto
                     {
                         TestAnalysis = new ReplaceTestAnalysisDto
@@ -177,14 +203,17 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task EditOkRequestTest()
         {
+            // Test Ok requests for edit
             using (var scope = await CreateScopeWithLimpingTestAsync())
             {
                 var goodRequests = new List<Object>
                 {
+                    // Proper test data, missing analysis
                     new EditLimpingTestDto
                     {
                         TestData = "'a': 'b'"
                     },
+                    // Proper test data and test analysis
                     new EditLimpingTestDto
                     {
                         TestData = "'a': 'b'",
@@ -206,15 +235,21 @@ namespace Limping.Api.Tests.ControllerTests
             }
 
         }
+
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendEditRequest(Guid limpingTestId, Object obj)
         {
             return await _fixture.Server.CreateClient()
-                .PatchAsync($"{ControllerUrls.LimpingTests}Edit/{limpingTestId}", CreateStringContent(obj));
+                .PatchAsync(LinkGenerator.LimpingTests.Edit(limpingTestId.ToString()).Href, CreateStringContent(obj));
         }
 
         [Fact]
         public async Task CreateOkRequestTest()
         {
+            // Test successful create
             using (var scope = await CreateScopeWithUserAsync())
             {
                 using (var response = await SendCreateRequest(new CreateLimpingTestDto
@@ -237,6 +272,7 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task CreateNotFoundRequestTest()
         {
+            // Test case when user doesn't exist scenario. Should return not found
             using (var scope = await CreateScopeWithUserAsync())
             {
                 using (var response = await SendCreateRequest(new CreateLimpingTestDto
@@ -259,11 +295,14 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task CreateBadRequestTest()
         {
+            // Test bad request scenarios for create
             using (var scope = await CreateScopeWithUserAsync())
             {
                 var badRequests = new List<Object>
                 {
+                    // Empty
                     new { },
+                    // Missing test data
                     new CreateLimpingTestDto
                     {
                         AppUserId = _defaultUser.Id,
@@ -274,6 +313,7 @@ namespace Limping.Api.Tests.ControllerTests
                             Description = "blabla"
                         }
                     },
+                    // Missing user id
                     new CreateLimpingTestDto
                     {
                         TestData = "'a':'b'",
@@ -284,11 +324,13 @@ namespace Limping.Api.Tests.ControllerTests
                             Description = "blabla"
                         }
                     },
+                    // Missing test analysis
                     new CreateLimpingTestDto
                     {
                         TestData = "'a':'b'",
                         AppUserId = _defaultUser.Id,
                     },
+                    // Bad test analysis
                     new CreateLimpingTestDto 
                     {
                         TestData = "'a': 'b'",
@@ -309,15 +351,20 @@ namespace Limping.Api.Tests.ControllerTests
                 }
             }
         }
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendCreateRequest(Object obj)
         {
             return await _fixture.Server.CreateClient()
-                .PostAsync($"{ControllerUrls.LimpingTests}Create", CreateStringContent(obj));
+                .PostAsync(LinkGenerator.LimpingTests.Create().Href, CreateStringContent(obj));
         }
 
         [Fact]
         public async Task DeleteOkTest()
         {
+            // Test ok scenario for deletion of limping test
             using (var scope = await CreateScopeWithLimpingTestAsync())
             {
                 using (var response = await SendDeleteRequest(_defaultLimpingTest.Id))
@@ -333,6 +380,7 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task DeleteNotFoundTest()
         {
+            // Test not found for test deletion that doesn't exist
             using (var scope = await CreateScopeWithUserAsync())
             {
                 using (var response = await SendDeleteRequest(Guid.NewGuid()))
@@ -341,12 +389,23 @@ namespace Limping.Api.Tests.ControllerTests
                 }
             }
         }
+
+        /// <summary>
+        /// Send the request to virtual server
+        /// </summary>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendDeleteRequest(Guid limpingId)
         {
             return await _fixture.Server.CreateClient()
-                .DeleteAsync($"{ControllerUrls.LimpingTests}Delete/{limpingId}");
+                .DeleteAsync(LinkGenerator.LimpingTests.Delete(limpingId.ToString()).Href);
         }
 
+
+        /// <summary>
+        /// Create content body string to send with the requests
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private StringContent CreateStringContent(Object obj)
         {
             return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8,

@@ -62,6 +62,7 @@ namespace Limping.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Limping Data of Patients API", Version = "v1" });
+                c.IncludeXmlComments(@"Limping.Api.xml");
             });
         }
 
@@ -139,7 +140,7 @@ namespace Limping.Api
             {
                 o.PreSerializeFilters.Add((document, request) =>
                  {
-                     document.Paths = document.Paths.ToDictionary(p => p.Key.ToLowerInvariant(), p => p.Value);
+                     document.Paths = document.Paths.ToDictionary(p => LowercaseEverythingButParameters(p.Key), p => p.Value);
                  });
             });
 
@@ -151,6 +152,10 @@ namespace Limping.Api
             });
 
             app.UseMvc();
+        }
+        private string LowercaseEverythingButParameters(string key)
+        {
+            return String.Join('/', key.Split('/').Select(x => x.Contains("{") ? x : x.ToLower()));
         }
     }
 }

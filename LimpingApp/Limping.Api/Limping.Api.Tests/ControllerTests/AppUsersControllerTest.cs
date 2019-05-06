@@ -11,6 +11,7 @@ using Limping.Api.Models;
 using Limping.Api.Services;
 using Limping.Api.Services.Interfaces;
 using Limping.Api.Tests.Fixtures;
+using Limping.Api.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
@@ -30,6 +31,7 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task GetAll()
         {
+            // Test get all returns ok
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
@@ -41,11 +43,16 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Sends a get all request through the virtual server
+        /// </summary>
+        /// <returns>Response of the server</returns>
         private async Task<HttpResponseMessage> SendGetAll()
         {
             return await _fixture.Server
-                .CreateRequest($"{ControllerUrls.AppUsers}GetAllUsers").GetAsync();
+                .CreateRequest(LinkGenerator.Users.GetAll().Href).GetAsync();
         }
+
         [Fact]
         public async Task GetUserByIdTest()
         {
@@ -76,10 +83,15 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Sends a get user request through the virtual server
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>Response of the server</returns>
         private async Task<HttpResponseMessage> SendGetUserById(string userId)
         {
             return await _fixture.Server
-                .CreateRequest($"{ControllerUrls.AppUsers}GetById/{userId}").GetAsync();
+                .CreateRequest(LinkGenerator.Users.GetSingle(userId).Href).GetAsync();
         }
         [Fact]
         public async Task CreateUserBadRequestTest()
@@ -109,6 +121,7 @@ namespace Limping.Api.Tests.ControllerTests
                 {
                     UserName = "n@gmail.com"
                 };
+
                 using (var response = await SendCreateUserRequest(missingEmail))
                 {
 
@@ -124,7 +137,7 @@ namespace Limping.Api.Tests.ControllerTests
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
 
-                // Test Ok request
+                // Test Ok request for good request
                 var goodRequest = new CreateUserDto
                 {
 
@@ -142,6 +155,7 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task CreateUserConflictTest()
         {
+            // Test conflicts
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
@@ -180,14 +194,19 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Sends a create user request through the virtual server
+        /// </summary>
+        /// <returns>Response of the server</returns>
         private async Task<HttpResponseMessage> SendCreateUserRequest(Object body)
         {
             return await _fixture.Server
-                .CreateClient().PostAsync($"{ControllerUrls.AppUsers}CreateUser", CreateStringContent(body));
+                .CreateClient().PostAsync(LinkGenerator.Users.Create().Href, CreateStringContent(body));
         }
         [Fact]
         public async Task EditOkTest()
         {
+            // Test the scenarios for ok request as listed below
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
@@ -230,6 +249,7 @@ namespace Limping.Api.Tests.ControllerTests
                 }
             }
         }
+
         [Fact]
         public async Task EditBadRequestAndNotFoundTest()
         {
@@ -288,15 +308,21 @@ namespace Limping.Api.Tests.ControllerTests
             }
 
         }
+        /// <summary>
+        /// Sends a edit user request through the virtual server
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>Response of the server</returns>
         private async Task<HttpResponseMessage> SendEditUserRequest(string userId, Object body)
         {
             return await _fixture.Server.CreateClient()
-                .PatchAsync($"{ControllerUrls.AppUsers}EditUser/{userId}", CreateStringContent(body));
+                .PatchAsync(LinkGenerator.Users.Edit(userId).Href, CreateStringContent(body));
         }
 
         [Fact]
         public async Task DeleteNotFoundTest()
         {
+            // Test delete returns not found if id doesn't exist in db
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
@@ -310,6 +336,7 @@ namespace Limping.Api.Tests.ControllerTests
         [Fact]
         public async Task DeleteOkTest()
         {
+            // Test delete returns OK if Id exists
             using (var scope = _fixture.Server.Host.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<DatabaseFixture>().Context;
@@ -331,11 +358,22 @@ namespace Limping.Api.Tests.ControllerTests
             }
         }
 
+        /// <summary>
+        /// Sends a delete user request through the virtual server
+        /// </summary>
+        /// <param name="userId">The id of the user</param>
+        /// <returns>Response of the server</returns>
         private async Task<HttpResponseMessage> SendDeleteUserRequest(string userId)
         {
             return await _fixture.Server.CreateClient()
-                .DeleteAsync($"{ControllerUrls.AppUsers}DeleteUser/{userId}");
+                .DeleteAsync(LinkGenerator.Users.Delete(userId).Href);
         }
+
+        /// <summary>
+        /// Create the body for requests as content string
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private StringContent CreateStringContent(Object obj)
         {
             return new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8,

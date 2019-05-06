@@ -6,6 +6,7 @@ using Halcyon.HAL;
 using Limping.Api.Constants;
 using Limping.Api.Extensions;
 using Limping.Api.Models;
+using Limping.Api.Utils;
 
 namespace Limping.Api.Dtos.UserDtos.Responses
 {
@@ -17,8 +18,8 @@ namespace Limping.Api.Dtos.UserDtos.Responses
             this.AddEmbeddedCollection("users", userResponses);
 
             this.AddLinks(
-                new Link("self", $"/api/Users/GetAllUsers", "Get all users", "GET"),
-                new LinkExtended("create", $"{ControllerUrls.AppUsers}CreateUser", "Create user", LinkMethods.POST, nameof(CreateUserDto))
+                LinkGenerator.Users.GetAll("self"),
+                LinkGenerator.Users.Create()
             );
         }
     }

@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Limping.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Limping.Api.Controllers.AnalysisController">
+            <summary>
+            Creates the analysis for a test
+            </summary>
+        </member>
+        <member name="M:Limping.Api.Controllers.AnalysisController.GetById(System.Guid)">
+            <summary>
+            Gets a single analysis by its id
+            </summary>
+            <param name="analysisId">The id of the analysis</param>
+            <returns>
+            Not Found if it doesn't exist
+            The HAL response with the analysis otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.AnalysisController.UpsertTestAnalysis(System.Guid,Limping.Api.Dtos.TestAnalysisDtos.ReplaceTestAnalysisDto)">
+            <summary>
+            Insert or update a test analysis. Insert if doesn't exist, update otherwise
+            </summary>
+            <param name="testId">The id of the test for which we are upserting the analysis</param>
+            <param name="testAnalysisDto">The analysis dto</param>
+            <returns>
+            Not found if the test we are upserting for doesn't exist
+            
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.AnalysisController.EditTestAnalysis(System.Guid,Limping.Api.Dtos.TestAnalysisDtos.ReplaceTestAnalysisDto)">
+            <summary>
+            Replaces a test analysis
+            </summary>
+            <param name="testAnalysisId">The analysis which will be replaced</param>
+            <param name="testAnalysisDto">The dto of the analysis which will replace it</param>
+            <returns>The replaced analysis</returns>
+        </member>
+        <member name="T:Limping.Api.Controllers.LimpingTestsController">
+            <summary>
+            The controller for the limping tests
+            </summary>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.GetAll">
+            <summary>
+            Gets all the limping tests
+            </summary>
+            <returns>A HAL request with all limping tests embedded</returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.GetForUser(System.String)">
+            <summary>
+            Gets all the limping tests for a user
+            </summary>
+            <param name="userId">The user id for which the limping tests will be fetched</param>
+            <returns>
+            Not Found if user doesn't exist
+            Hal Response with embedded limping tests otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.GetById(System.Guid)">
+            <summary>
+            Gets a single limping test by its id
+            </summary>
+            <param name="limpingTestId">The id of the limping test</param>
+            <returns>
+            Not found if the id doesn't exist
+            The HAL response with the Limping Test otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.Create(Limping.Api.Dtos.LimpingTestDtos.CreateLimpingTestDto)">
+            <summary>
+            Create a limping test
+            </summary>
+            <param name="createDto">The dto needed to create a limping test</param>
+            <returns>
+            Bad request if invalid request
+            Not found if the user for which needed to create doesn't exist
+            The HAL response with the created limping test otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.Edit(System.Guid,Limping.Api.Dtos.LimpingTestDtos.EditLimpingTestDto)">
+            <summary>
+            Edits the limping test
+            </summary>
+            <param name="testId">The test to be edited</param>
+            <param name="editTestDto">The dto for the patch request</param>
+            <returns>
+            Bad request if the request is invalid
+            Not Found if it the test doesn't exist
+            The HAL response with edited test otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.LimpingTestsController.Delete(System.Guid)">
+            <summary>
+            Deletes the limping test
+            </summary>
+            <param name="limpingTestId">The limping test that will be deleted</param>
+            <returns>
+            Not Found if it doesn't exist
+            A HAL Response with links only otherwsie
+            </returns>
+        </member>
+        <member name="T:Limping.Api.Controllers.RootController">
+            <summary>
+            The root controller of the requests
+            </summary>
+        </member>
+        <member name="M:Limping.Api.Controllers.RootController.Get">
+            <summary>
+            Get's all the links you can navigate to from the root
+            </summary>
+            <returns>HAL Response with links</returns>
+        </member>
+        <member name="T:Limping.Api.Controllers.UsersController">
+            <summary>
+            Manages all the actions for the users. Create, Delete, Edit, Get, Get All
+            </summary>
+        </member>
+        <member name="M:Limping.Api.Controllers.UsersController.GetAllUsers">
+            <summary>
+            Fetches all users from the database. Transforms them into the UserDto
+            Also adds links to the response
+            </summary>
+            <returns>The list of users as embedded and the links that can follow</returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.UsersController.GetById(System.String)">
+            <summary>
+            Fetches a single user from the database
+            Attaches the links to it and transforms it to a UserDto
+            </summary>
+            <param name="userId">The id of user which is being fetched</param>
+            <returns>Returns not found if it doesn't exist, the user and the links otherwise</returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.UsersController.CreateUser(Limping.Api.Dtos.UserDtos.CreateUserDto)">
+            <summary>
+            Create a user and then return the dto
+            </summary>
+            <param name="userDto">The needed parameters to create a user</param>
+            <returns>
+            Bad request if the request is invalid.
+            Conflict if a user with the same username or email exists.
+            The user with the links otherwise
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.UsersController.EditUser(System.String,Limping.Api.Dtos.UserDtos.EditUserDto)">
+            <summary>
+            Edits the user and returns it
+            </summary>
+            <param name="userId">The id of the user which will be edited</param>
+            <param name="editUserDto">The dto for the patch request</param>
+            <returns>
+            If the user was not found not found
+            If a user with same username or email exists returns conflict
+            If the request invalid bad request
+            
+            </returns>
+        </member>
+        <member name="M:Limping.Api.Controllers.UsersController.DeleteUser(System.String)">
+            <summary>
+            Deletes the user and returns the hal response with links to navigate away
+            </summary>
+            <param name="userId">The id of the user which is being deleted</param>
+            <returns>
+            Not found if user not found
+            A HAL response with links only otherwise
+            </returns>
+        </member>
+    </members>
+</doc>
