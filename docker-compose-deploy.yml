@@ -1,0 +1,36 @@
+version: "3"
+
+networks:
+    limpingapi-dev:
+        driver: bridge
+
+volumes:
+    postgres_data:
+        driver: local
+
+services:
+    limpingapi:
+        image: limpingapi:latest
+        depends_on:
+            - "postgres_image"
+        build:
+            context: ./LimpingApp/Limping.Api
+            dockerfile: Dockerfile
+        ports:
+            - "8090:80"
+        environment:
+            DB_CONNECTION_STRING: "Host=postgres_image;Port=5432;Database=LimpingDatabaseTest;Username=postgres;Password=postgres;"
+        networks:
+            - limpingapi-dev
+    postgres_image:
+        image: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "5432"
+        networks:
+            - limpingapi-dev

@@ -5,7 +5,7 @@ volumes:
         driver: local
 
 services:
-    postgres:
+  postgres_image:
         image: postgres
         environment:
             POSTGRES_USER: postgres

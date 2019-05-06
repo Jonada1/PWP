@@ -39,13 +39,12 @@ namespace Limping.Api
             services
                 .AddMvc();
             services.AddRouting(routeOptions => routeOptions.LowercaseUrls = true);
-            services.AddDbContext<LimpingDbContext>
-            (options => options.UseNpgsql
-                (
-            _limpingConfigurations.Value.Services?.Database.ConnectionString
-                          ?? "Host=localhost;Port=5440;Database=LimpingDatabaseTest;Username=postgres;Password=postgres;"
-                )
-            );
+            var connectionString = (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"))
+                                        ? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+                                        : _limpingConfigurations.Value.Services?.Database.ConnectionString )
+                                   ??
+                                   "Host=localhost;Port=5440;Database=LimpingDatabaseTest;Username=postgres;Password=postgres;";
+            services.AddDbContext<LimpingDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddTransient<ILimpingTestsService, LimpingTestsService>();
             services.AddTransient<IAppUsersService, AppUsersService>();
@@ -57,7 +56,13 @@ namespace Limping.Api
                     (typeof(IScopedService), ServiceLifetime.Scoped),
                     (typeof(ISingletonService), ServiceLifetime.Singleton)
                 }));
-
+            services.AddCors(options => { options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("*")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -150,7 +155,7 @@ namespace Limping.Api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Limping Data of Patients API V1");
             });
-
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseMvc();
         }
         private string LowercaseEverythingButParameters(string key)
