@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\nejdi\Documents\Projects\Jonada\PWP\LimpingApp\Limping.Api\Limping.Api\Limping.Api.xml</DocumentationFile>
+    <DocumentationFile>Limping.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
