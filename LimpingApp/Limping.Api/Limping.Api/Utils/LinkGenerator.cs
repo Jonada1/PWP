@@ -69,7 +69,7 @@ namespace Limping.Api.Utils
             public const string Prefix = "/api/analysis";
             public static Link GetSingle(string id, string rel = null)
             {
-                return new Link(rel ?? $"{Relation}-single", $"{Prefix}/{id}", "Get analysis", LinkMethods.POST);
+                return new Link(rel ?? $"{Relation}-single", $"{Prefix}/{id}", "Get analysis", LinkMethods.GET);
             }
             public static Link Edit(string id, string rel = null)
             {
