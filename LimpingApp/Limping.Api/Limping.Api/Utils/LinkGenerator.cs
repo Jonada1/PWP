@@ -60,7 +60,7 @@ namespace Limping.Api.Utils
             }
             public static Link Edit(string id, string rel = null)
             {
-                return new Link(rel ?? $"{Relation}-edit", $"{Prefix}/{id}", "Edit user", LinkMethods.PATCH);
+                return new Link(rel ?? $"{Relation}-edit", $"{Prefix}/{id}", "Edit limping test", LinkMethods.PATCH);
             }
         }
         public static class Analysis
