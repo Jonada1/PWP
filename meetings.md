@@ -40,7 +40,7 @@ During the meeting, the contents of each point was discussed. Overall structure 
 * **GRADE:** *To be filled by course staff*
 
 ### Minutes
-*Summary of what was discussed during the meeting*
+We discussed about how we have planned to design the API resources and how the resources will be exposed to the uniform interface.
 
 ### Action points
 *List here the actions points discussed with assistants*
