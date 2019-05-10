@@ -35,8 +35,8 @@ During the meeting, the contents of each point was discussed. Overall structure 
 *ONLY USED BY COURSE STAFF: Additional comments from the course staff*
 
 ## Meeting 3.
-* **DATE:**
-* **ASSISTANTS:**
+* **DATE:** 26 March 2019
+* **ASSISTANTS:** Ivan
 * **GRADE:** *To be filled by course staff*
 
 ### Minutes
