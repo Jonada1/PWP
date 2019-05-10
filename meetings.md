@@ -43,7 +43,8 @@ During the meeting, the contents of each point was discussed. Overall structure 
 We discussed about how we have planned to design the API resources and how the resources will be exposed to the uniform interface.
 
 ### Action points
-*List here the actions points discussed with assistants*
+1. The resource relations need changes and the state machine diagram has to be changed accordingly
+2. The table for uniform interface needs to be changed for tests by patients as (POST and DELETE not needed) 
 
 
 ### Comments from staff
