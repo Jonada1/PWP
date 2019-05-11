@@ -35,15 +35,16 @@ During the meeting, the contents of each point was discussed. Overall structure 
 *ONLY USED BY COURSE STAFF: Additional comments from the course staff*
 
 ## Meeting 3.
-* **DATE:**
-* **ASSISTANTS:**
+* **DATE:** 26 March 2019
+* **ASSISTANTS:** Ivan
 * **GRADE:** *To be filled by course staff*
 
 ### Minutes
-*Summary of what was discussed during the meeting*
+We discussed about how we have planned to design the API resources and how the resources will be exposed to the uniform interface.
 
 ### Action points
-*List here the actions points discussed with assistants*
+1. The resource relations need changes and the state machine diagram has to be changed accordingly
+2. The table for uniform interface needs to be changed for tests by patients as (POST and DELETE not needed) 
 
 
 ### Comments from staff
