@@ -19,6 +19,7 @@
 * Swachbuckle (https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-2.2&tabs=visual-studio) 
 * HALcyon (https://github.com/visualeyes/halcyon)
 * .NET CORE Framework libraries
+* .NET Unit Test Runner and Code Coverage Tool https://www.jetbrains.com/dotcover/
 
 # Group information
 * Jonada Ferracaku jonada.ferracaku@student.oulu.fi
