@@ -18,13 +18,13 @@ namespace Limping.Api.Services
 
         public async Task<LimpingTest> GetById(Guid id)
         {
-            var limpingTest = await _context.LimpingTests.FindAsync(id);
+            var limpingTest = await _context.LimpingTests.Include(x => x.TestAnalysis).SingleAsync(x => x.Id == id);
             return limpingTest;
         }
 
         public async Task<List<LimpingTest>> GetUserTests(string userId)
         {
-            var limpingTests = await _context.LimpingTests.Where(lt => lt.AppUserId == userId).ToListAsync();
+            var limpingTests = await _context.LimpingTests.Include(x => x.TestAnalysis).Where(lt => lt.AppUserId == userId).ToListAsync();
             return limpingTests;
         }
 
@@ -71,7 +71,7 @@ namespace Limping.Api.Services
 
         public async Task<List<LimpingTest>> GetAll()
         {
-            var tests = await _context.LimpingTests.AsNoTracking().ToListAsync();
+            var tests = await _context.LimpingTests.Include(x => x.TestAnalysis).AsNoTracking().ToListAsync();
             return tests;
         }
     }
