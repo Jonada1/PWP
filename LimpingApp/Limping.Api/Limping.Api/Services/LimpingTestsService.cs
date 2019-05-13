@@ -18,7 +18,7 @@ namespace Limping.Api.Services
 
         public async Task<LimpingTest> GetById(Guid id)
         {
-            var limpingTest = await _context.LimpingTests.Include(x => x.TestAnalysis).SingleAsync(x => x.Id == id);
+            var limpingTest = await _context.LimpingTests.Include(x => x.TestAnalysis).SingleOrDefaultAsync(x => x.Id == id);
             return limpingTest;
         }
 
