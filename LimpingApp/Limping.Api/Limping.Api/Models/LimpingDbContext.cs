@@ -26,7 +26,8 @@ namespace Limping.Api.Models
                 .HasForeignKey<TestAnalysis>(ta => ta.LimpingTestId);
             modelBuilder.Entity<LimpingTest>()
                 .HasOne(lt => lt.AppUser)
-                .WithMany(usr => usr.LimpingTests);
+                .WithMany(usr => usr.LimpingTests)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

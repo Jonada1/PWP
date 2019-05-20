@@ -11,7 +11,7 @@ namespace Limping.Api.Dtos.TestAnalysisDtos.Responses
 {
     public class GetTestAnalysisResponse: HALResponse
     {
-        public GetTestAnalysisResponse(TestAnalysis analysis, Link selfLink = null) : base(analysis)
+        public GetTestAnalysisResponse(TestAnalysis analysis, Link selfLink = null) : base(new TestAnalysisDto(analysis))
         {
             if (selfLink == null)
             {

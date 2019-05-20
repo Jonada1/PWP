@@ -30,7 +30,7 @@ namespace Limping.Api.Dtos.LimpingTestDtos.Responses
                 LinkGenerator.LimpingTests.Edit(test.Id.ToString()),
                 LinkGenerator.LimpingTests.Delete(test.Id.ToString()),
                 LinkGenerator.LimpingTests.GetAll(),
-                LinkGenerator.Analysis.GetSingle(test.TestAnalysis.Id.ToString()),
+                LinkGenerator.Analysis.GetSingle(test.TestAnalysis?.Id.ToString() ?? test.TestAnalysisId.ToString()),
                 LinkGenerator.Users.GetSingle(test.AppUserId)
             );
         }
